@@ -1,0 +1,50 @@
+name: Run Data Preprocessing
+
+on:
+  push:
+    paths:
+      - 'preprocessing/**'
+      - 'heart_failure_raw.csv'
+  workflow_dispatch:
+
+jobs:
+  run-preprocessing:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set Up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.7'
+
+    - name: Install Dependencies
+      run: |
+        pip install pandas scikit-learn
+
+    - name: Run Preprocessing Script
+      run: |
+        python preprocessing/automate.py
+
+    - name: Commit and Push Processed Dataset to Repository
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add preprocessing/preprocess_dataset/train_preprocessed.csv \
+               preprocessing/preprocess_dataset/test_preprocessed.csv
+        git diff --cached --quiet || git commit -m "[AUTO] Update: Processed Datasets"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Processed Dataset as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: preprocessed-datasets
+        path: |
+          preprocessing/preprocess_dataset/train_preprocessed.csv
+          preprocessing/preprocess_dataset/test_preprocessed.csv
