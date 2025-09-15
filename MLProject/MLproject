@@ -1,7 +1,5 @@
 name: mlops-heart-failure-prediction
 
-conda_env: conda.yml
-
 entry_points:
   train:
     parameters:

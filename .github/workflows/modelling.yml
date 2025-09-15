@@ -30,7 +30,6 @@ concurrency:
 jobs:
   build-train:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,38 +37,34 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Set Up Conda
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          miniforge-variant: Mambaforge
-          use-mamba: true
-          auto-activate-base: true
+          python-version: '3.10'
 
-      - name: Install MLflow CLI
-        shell: bash -l {0}
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install "mlflow==2.14.1"
+          pip install -r MLProject/requirements.txt
 
-      - name: Show Python & MLflow Versions
-        shell: bash -l {0}
+      - name: Show Versions
         run: |
           python -V
           mlflow --version
+          pip freeze | sed -n '1,120p'
 
-      - name: Ensure Output Folders Exist
-        shell: bash -l {0}
+      - name: Ensure Output Folders
         run: |
           mkdir -p artifacts models
 
       - name: Run Optuna Tuning (MLflow Project)
-        shell: bash -l {0}
         env:
           N_TRIALS_INPUT: ${{ github.event.inputs.n_trials }}
         run: |
           N_TRIALS="${N_TRIALS_INPUT:-$N_TRIALS_DEFAULT}"
           echo "Running tuning with N_TRIALS=${N_TRIALS}"
           mlflow run MLProject \
+            --env-manager=local \
             -e tune \
             -P experiment_name="${EXP_TUNE}" \
             -P tracking_dir="${TRACK_DIR}" \
@@ -77,9 +72,9 @@ jobs:
             -P study_db="optuna_study_mlp.db"
 
       - name: Run Final Training (MLflow Project)
-        shell: bash -l {0}
         run: |
           mlflow run MLProject \
+            --env-manager=local \
             -e train \
             -P experiment_name="${EXP_TRAIN}" \
             -P tracking_dir="${TRACK_DIR}"
@@ -106,7 +101,6 @@ jobs:
 
       - name: Commit Artifacts & Models
         if: github.ref == 'refs/heads/main'
-        shell: bash -l {0}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
