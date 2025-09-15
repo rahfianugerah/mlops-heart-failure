@@ -1,0 +1,26 @@
+name: mlops-heart-failure-prediction
+
+conda_env: conda.yml
+
+entry_points:
+  train:
+    parameters:
+      experiment_name: {type: str, default: "mlops-mlp-heart-failure"}
+      tracking_dir:    {type: str, default: "mlruns"}
+    command: >
+      python modelling.py
+      --experiment_name {experiment_name}
+      --tracking_dir {tracking_dir}
+
+  tune:
+    parameters:
+      experiment_name: {type: str, default: "mlops-mlp-opt-heart-failure"}
+      tracking_dir:    {type: str, default: "mlruns"}
+      n_trials:        {type: int, default: 30}
+      study_db:        {type: str, default: "optuna_study_mlp.db"}
+    command: >
+      python tuning.py
+      --experiment_name {experiment_name}
+      --tracking_dir {tracking_dir}
+      --n_trials {n_trials}
+      --study_db {study_db}

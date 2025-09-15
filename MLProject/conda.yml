@@ -1,0 +1,15 @@
+name: env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - mlflow==2.19.0
+      - scikit-learn==1.6.1
+      - numpy
+      - pandas
+      - matplotlib
+      - joblib
+      - optuna==4.5.0
