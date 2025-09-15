@@ -1,7 +1,7 @@
 import joblib
 import numpy as np
 import pandas as pd
-import os, json, argparse
+import os, json, argparse, shutil
 import mlflow, mlflow.sklearn
 import matplotlib.pyplot as plt
 
@@ -170,7 +170,11 @@ def main():
                 "roc_auc_plot":   float(auc_plot)
             }, f, indent=2)
 
-        mlflow.sklearn.save_model(mlp, path=models_dir / "mlp-models")
+        target_path = models_dir / "mlp-models"
+        if target_path.exists():
+            shutil.rmtree(target_path)
+
+        mlflow.sklearn.save_model(mlp, path=target_path)
         joblib.dump(mlp, models_dir / "mlp-pipeline.joblib")
 
         mlflow.sklearn.log_model(mlp, artifact_path="model")
