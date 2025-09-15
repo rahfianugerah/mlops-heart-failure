@@ -1,5 +1,10 @@
+joblib==1.5.1
 matplotlib==3.10.6
-numpy==2.3.2
+mlflow==2.19.0
+mlflow_skinny==2.19.0
+mlflow_tracing==3.3.1
+numpy==2.3.3
+optuna==4.5.0
 pandas==2.3.2
-scikit_learn==1.7.1
+scikit_learn==1.7.2
 seaborn==0.13.2
