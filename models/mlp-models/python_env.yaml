@@ -1,7 +1,7 @@
-python: 3.10.18
+python: 3.12.11
 build_dependencies:
 - pip==25.2
-- setuptools==80.9.0
-- wheel==0.45.1
+- setuptools
+- wheel
 dependencies:
 - -r requirements.txt
