@@ -2,8 +2,8 @@
   "units1": 128,
   "units2": 16,
   "activation": "relu",
-  "alpha": 0.0007475694448800541,
-  "learning_rate": 0.01305605722983295,
+  "alpha": 0.005408287817976951,
+  "learning_rate": 0.04099764994810526,
   "batch_size": 128,
-  "epochs": 350
+  "epochs": 300
 }
