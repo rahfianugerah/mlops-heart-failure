@@ -6,7 +6,7 @@
 ![Python](https://img.shields.io/badge/Python-3670A0?&logo=python&logoColor=ffdd54)
 ![GitHub Actions](https://img.shields.io/badge/Github%20Actions-%232671E5.svg?&logo=githubactions&logoColor=white)
 
-# An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Parzen Estimator
+# An MLOps Approach for Heart Failure Prediction Using MLP and Bayesian Optimization via Tree-Structured Parzen Estimator (TPE)
 
 <p align=justify>
 The goal of this MLOps project is to build and deploy a robust heart failure prediction system using machine learning model. The project will use an MLOps lifecycle to automate the training, optimization, and deployment of the model.
